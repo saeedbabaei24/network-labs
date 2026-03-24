@@ -1,0 +1,15 @@
+vedge# conf t 
+vedge(config)# system 
+vedge(config-system)# host-name vbond 
+vedge(config-system)# site-id 1 
+vedge(config-system)# system-ip 1.1.1.61 
+vedge(config-system)# organization-name "Saeed" 
+vedge(config-system)# vbond 192.168.199.61 
+vedge(config-system)# vbond 192.168.199.61 local 
+vbond(config-system)# vpn 0 
+vbond(config-vpn-0)# interface ge0/0 
+vbond(config-interface-ge0/0)# ip address 192.168.199.61/24 
+vbond(config-interface-ge0/0)# no shut 
+vbond(config-interface-ge0/0)# no tunnel-interface 
+vbond(config-interface-ge0/0)# ip route 0.0.0.0/0 192.168.199.254 
+vbond(config-vpn-0)# commit 
