@@ -1,0 +1,33 @@
+	
+#controller-mode enable
+
+Router#config-transaction 
+Router(config)# system 
+Router(config-system)# site-id 3 
+Router(config-system)# system-ip 1.1.1.80 
+Router(config-system)# organization-name "Newyorker" 
+Router(config-system)# vbond 192.168.199.61 
+Router(conRouter(config)#  
+Router(config)# hostname cEdge01 
+Router(config)# commit 
+cEdge01(config)# int GigabitEthernet1 
+cEdge01(config-if)# ip add 10.0.0.6 255.255.255.252 
+cEdge01(config-if)# no shut 
+cEdge01(config)# int Tunnel 0 
+cEdge01(config-if)# ip unnumbered GigabitEthernet1 
+cEdge01(config-if)# tunnel source GigabitEthernet1 
+cEdge01(config-if)# tunnel mode sdwan 
+cEdge01(config)# sdwan 
+cEdge01(config-sdwan)# interface GigabitEthernet1 
+cEdge01(config-interface-GigabitEthernet1)# tunnel-interface 
+cEdge01(config-tunnel-interface)# allow-service all 
+cEdge01(config-tunnel-interface)# encapsulation ipsec 
+cEdge01(config-tunnel-interface)# exit 
+cEdge01(config-interface-GigabitEthernet1)# exit 
+cEdge01(config)# ip route 0.0.0.0 0.0.0.0 10.0.0.5 
+cEdge01(config)# commit 
+
+
+cEdge01#$request platform software sdwan root-cert-chain install bootflash:Newyorker.crt 
+
+cEdge01#request platform software sdwan vedge_cloud activate chassis-number X token X  
