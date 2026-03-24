@@ -1,0 +1,13 @@
+vmanage# config terminal
+vmanage(config)# system
+vmanage(config-system)# site-id SITE-ID
+vmanage(config-system)# system-ip SYSTEM-IP
+vmanage(config-system)# organization-name "ORGANIZATION-NAME"
+vmanage(config-system)# vbond IP-ADDRESS
+vmanage(config-system)# ntp server NTP-IP-ADDRESS    <-- OPTIONAL
+vmanage(config-system)# vpn 0
+vmanage(config-vpn-0)# ip route 0.0.0.0/0 NEXT_HOP
+vmanage(config-vpn-0)# interface eth0
+vmanage(config-interface-eth-0)# ip address IP_ADDRESS/PREFIX_LENGTH
+vmanage(config-interface-eth-0)# no shutdown
+vmanage(config-interface-eth-0)# tunnel-interface
