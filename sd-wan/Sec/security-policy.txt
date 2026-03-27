@@ -1,0 +1,56 @@
+policy
+ intrusion-prevention IPS
+  security-level balanced
+  inspection-mode detection
+  log-level err
+  target-vpns 1
+ !
+ url-filtering Url-Filtering
+  web-category-action block
+  web-categories bot-nets
+  block-threshold moderate-risk
+  white-list White-Url
+  block text Access to the requested page has been denied. Please contact your Network Administrator
+  alert blacklist
+  target-vpns 1
+ !
+ advanced-malware-protection AMP
+  file-reputation-cloud-server cloud-isr-asn.eu.amp.cisco.com
+  file-reputation-est-server cloud-isr-est.eu.amp.cisco.com
+  file-reputation-alert critical
+  target-vpns matchAllVpn
+ !
+ zone-based-policy FW
+    sequence 1
+     seq-name Rule_1
+     match
+      destination-data-prefix-list 8-8-8-8
+     !
+     action inspect
+     !
+    !
+  default-action drop
+ !
+  zone Inet
+   vpn 0 
+  !
+  zone LAN
+   vpn 1 
+  !
+  zone-pair ZP_LAN_Inet_FW
+   source-zone LAN
+   destination-zone Inet
+   zone-policy FW
+  !
+ lists
+  data-prefix-list 8-8-8-8
+   ip-prefix 8.8.8.8/32 
+  !
+  url-white-list White-Url
+   pattern google.com 
+   pattern yahoo.com 
+  !
+ !
+ zone-to-nozone-internet deny
+ failure-mode open
+!
