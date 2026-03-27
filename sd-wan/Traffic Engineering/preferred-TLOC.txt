@@ -1,0 +1,101 @@
+viptela-policy:policy
+ data-policy _vpn10_APP-TE
+  vpn-list vpn10
+    sequence 1
+     match
+      app-list Google_Apps
+      source-ip 0.0.0.0/0
+     !
+     action accept
+      set
+       local-tloc-list 
+        color public-internet
+        encap ipsec
+      !
+     !
+    !
+  default-action drop
+ !
+ lists
+  app-list Google_Apps
+   app google_translate 
+   app google-earth 
+   app google_docs 
+   app google-services-audio 
+   app google_picasa 
+   app google-photos 
+   app google_appengine 
+   app hangouts-media 
+   app google_cache 
+   app gtalk-chat 
+   app google-services-media 
+   app gmail_mobile 
+   app gmail 
+   app google_plus 
+   app hangouts-audio 
+   app ytimg 
+   app youtube_hd 
+   app google_gen 
+   app google-services 
+   app gtalk-ft 
+   app google_trusted_store 
+   app google 
+   app hangouts-chat 
+   app google-services-video 
+   app google-accounts 
+   app google_maps 
+   app gmail_chat 
+   app google_groups 
+   app google-docs 
+   app googlebot 
+   app google_play_music 
+   app google_photos 
+   app chrome_update 
+   app google_desktop 
+   app google_tags 
+   app google_safebrowsing 
+   app google_earth 
+   app google_play 
+   app google_sprayscape 
+   app google-plus 
+   app picasa 
+   app gtalk-video 
+   app google_ads 
+   app android-updates 
+   app gcs 
+   app google_analytics 
+   app google_code 
+   app google_toolbar 
+   app blogger 
+   app hangouts-video 
+   app google_weblight 
+   app gtalk 
+   app gmail_basic 
+   app google_calendar 
+   app google_accounts 
+   app gmail_drive 
+   app google_classroom 
+   app hangouts 
+   app gstatic 
+   app google-play 
+   app google_spaces 
+   app gtalk-voip 
+   app google_skymap 
+   app hangouts-file-transfer 
+   app google-downloads 
+   app youtube 
+   app google_localguides 
+  !
+  site-list Spokes-list
+   site-id 1001-1003 
+  !
+  vpn-list vpn10
+   vpn 10 
+  !
+ !
+!
+apply-policy
+ site-list Spokes-list
+  data-policy _vpn10_APP-TE from-service
+ !
+!
