@@ -1,0 +1,31 @@
+viptela-policy:policy
+ control-policy Fw-Service
+ 
+  sequence 1
+   match route
+    site-list Spokes-list
+    prefix-list _AnyIpv4PrefixList
+   !
+   action accept
+    set
+     service Fw
+   !
+  !
+ !
+ default-action reject
+!
+ 
+lists
+ site-list Spokes-list
+  site-id 1001-1003
+ !
+ 
+ prefix-list _AnyIpv4PrefixList
+  ip-prefix 0.0.0.0/0 le 32
+ !
+!
+!
+ 
+apply-policy
+ site-list Spokes-list
+  control-policy Fw-Service out
