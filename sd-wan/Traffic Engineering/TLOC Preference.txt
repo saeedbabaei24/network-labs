@@ -1,0 +1,75 @@
+viptela-policy:policy
+ control-policy Hub-Spoke-Topology
+    sequence 1
+     match tloc
+      color-list MPLS-Color
+     !
+     action accept
+      set
+       preference 500
+      !
+     !
+    !
+    sequence 11
+     match tloc
+      site-list Hub
+     !
+     action accept
+     !
+    !
+    sequence 21
+     match route
+      site-list Hub
+      prefix-list _AnyIpv4PrefixList
+     !
+     action accept
+     !
+    !
+    sequence 31
+     match route
+      site-list Spokes
+      prefix-list _AnyIpv4PrefixList
+     !
+     action accept
+      set
+       tloc-list DC-Inet_TLOC
+      !
+     !
+    !
+    sequence 41
+     match route
+      site-list Spokes
+      prefix-list _AnyIpv4PrefixList
+     !
+     action accept
+      set
+       tloc-list DC-MPLS-Tloc
+      !
+     !
+    !
+  default-action reject
+ !
+ lists
+  color-list MPLS-Color
+   color mpls 
+  !
+  site-list Hub
+   site-id 100 
+  !
+  site-list Spokes
+   site-id 1001-1003 
+  !
+  tloc-list DC-Inet_TLOC
+   tloc 10.10.23.38 color public-internet encap ipsec 
+  !
+  tloc-list DC-MPLS-Tloc
+   tloc 10.10.23.6 color mpls encap ipsec 
+  !
+  prefix-list _AnyIpv4PrefixList
+   ip-prefix 0.0.0.0/0 le 32 
+  !
+ !
+!
+apply-policy
+ site-list Spokes
+  control-policy Hub-Spoke-Topology out
