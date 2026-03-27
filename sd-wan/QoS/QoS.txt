@@ -1,0 +1,38 @@
+policy
+  qos-scheduler QoS-map1_0
+   class Queue0
+   bandwidth-percent 30
+   buffer-percent 30
+   scheduling llq
+   drops tail-drop
+   burst 15000
+  !
+  qos-scheduler QoS-map1_1
+   class Queue1
+   bandwidth-percent 40
+   buffer-percent 40
+   scheduling wrr
+   drops red-drop
+  !
+  qos-scheduler QoS-map1_2
+   class Queue2
+   bandwidth-percent 30
+   buffer-percent 30
+   scheduling wrr
+   drops red-drop
+  !
+  qos-map QoS-map1
+   qos-scheduler QoS-map1_0 
+   qos-scheduler QoS-map1_1 
+   qos-scheduler QoS-map1_2 
+  !
+  class-map 
+   class Bulk queue 1 
+   class Other queue 2 
+   class Queue0 queue 0 
+   class Queue1 queue 1 
+   class Queue2 queue 2 
+  !
+ cloud-qos 
+ cloud-qos-service-side 
+!
