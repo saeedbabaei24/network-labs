@@ -1,0 +1,44 @@
+viptela-policy:policy
+  sla-class Outlook-SLA-Class
+   latency 300
+   loss 2
+   jitter 2
+  !
+ app-route-policy _vpn10_Outlook-AAR-Policy
+  vpn-list vpn10
+    sequence 1
+     match
+      app-list outlook-app-list
+      source-ip 0.0.0.0/0
+     !
+     action
+      sla-class Outlook-SLA-Class  preferred-color mpls
+     !
+    !
+ !
+ lists
+  app-list outlook-app-list
+   app live_hotmail 
+   app livemail_mobile 
+   app owa 
+   app outlook-web-service 
+  !
+  site-list Hub-list
+   site-id 100 
+  !
+  site-list Spokes-list
+   site-id 1001-1003 
+  !
+  vpn-list vpn10
+   vpn 10 
+  !
+ !
+!
+apply-policy
+ site-list Spokes-list
+  app-route-policy _vpn10_Outlook-AAR-Policy
+ !
+ site-list Hub-list
+  app-route-policy _vpn10_Outlook-AAR-Policy
+ !
+!
