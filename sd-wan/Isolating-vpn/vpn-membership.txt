@@ -1,0 +1,65 @@
+viptela-policy:policy
+ vpn-membership vpnMembership_-137978950
+    sequence 10
+     match
+      vpn-list Prod
+     !
+     action accept
+     !
+    !
+  default-action reject
+ !
+ control-policy Hub-Spoke-Topology
+    sequence 1
+     match tloc
+      site-list Hub
+     !
+     action accept
+     !
+    !
+    sequence 11
+     match route
+      site-list Hub
+      prefix-list _AnyIpv4PrefixList
+     !
+     action accept
+     !
+    !
+    sequence 21
+     match route
+      site-list Spokes
+      prefix-list _AnyIpv4PrefixList
+     !
+     action accept
+      set
+       tloc-list DC-Tloc
+      !
+     !
+    !
+  default-action reject
+ !
+ lists
+  site-list Hub
+   site-id 100 
+  !
+  site-list Spokes
+   site-id 1001-1003 
+  !
+  tloc-list DC-Tloc
+   tloc 10.10.23.6 color public-internet encap ipsec 
+  !
+  vpn-list Prod
+   vpn 1 
+  !
+  prefix-list _AnyIpv4PrefixList
+   ip-prefix 0.0.0.0/0 le 32 
+  !
+ !
+!
+apply-policy
+ site-list Spokes
+  control-policy Hub-Spoke-Topology out
+ !
+ site-list Hub
+  vpn-membership vpnMembership_-137978950
+ !
