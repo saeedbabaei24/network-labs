@@ -1,0 +1,50 @@
+viptela-policy:policy
+ control-policy Shared-Services
+    sequence 1
+     match route
+      vpn-list vpn-stores
+      prefix-list _AnyIpv4PrefixList
+     !
+     action accept
+      export-to vpn-list vpn30
+     !
+    !
+    sequence 11
+     match route
+      vpn-list vpn30
+      prefix-list Shared-Services-Prefix
+     !
+     action accept
+      export-to vpn-list vpn-stores
+     !
+    !
+    sequence 21
+     match tloc
+     !
+     action accept
+     !
+    !
+  default-action accept
+ !
+ lists
+  prefix-list Shared-Services-Prefix
+   ip-prefix 172.21.21.0/24 
+  !
+  site-list Hub-list
+   site-id 100 
+  !
+  vpn-list vpn-stores
+   vpn 10 
+   vpn 20 
+  !
+  vpn-list vpn30
+   vpn 30 
+  !
+  prefix-list _AnyIpv4PrefixList
+   ip-prefix 0.0.0.0/0 le 32 
+  !
+ !
+!
+apply-policy
+ site-list Hub-list
+  control-policy Shared-Services in
