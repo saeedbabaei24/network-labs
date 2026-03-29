@@ -1,0 +1,12 @@
+R1:
+track 1 interface Loopback1 line-protocol
+interface FastEthernet0/0
+ip address 192.168.123.1 255.255.255.0
+glbp 1 ip 192.168.123.100
+glbp 1 weighting 120 lower 80 upper 90
+glbp 1 weighting track 1 decrement 50
+
+R2:
+interface FastEthernet0/0
+ip address 192.168.123.2 255.255.255.0
+glbp 1 ip 192.168.123.100
